@@ -18,7 +18,7 @@ class News extends Model
     {
         return $this->belongsTo(author::class);
     }
-    public function category()
+    public function newsCategory()
     {
         return $this->belongsTo(NewsCategory::class, 'news_category_id');
     }
