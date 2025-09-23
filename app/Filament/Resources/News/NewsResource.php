@@ -11,16 +11,17 @@ use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
 use function Laravel\Prompts\select;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Utilities\Set;
 
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Schemas\Components\Utilities\Set;
 use App\Filament\Resources\News\Pages\EditNews;
 use App\Filament\Resources\News\Pages\ListNews;
 use App\Filament\Resources\News\Pages\CreateNews;
 use App\Filament\Resources\News\Schemas\NewsForm;
 use App\Filament\Resources\News\Tables\NewsTable;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 
 class NewsResource extends Resource
 {
@@ -46,9 +47,12 @@ class NewsResource extends Resource
             ->readOnly(),
             FileUpload::make('thumbnail')
             ->image()
-            ->required(),
+            ->required()
+            ->columnSpanFull(),
             RichEditor::make('content')
-            ->required(),
+            ->required()
+            ->columnSpanFull(),
+            
 
     
         ]);
@@ -56,7 +60,19 @@ class NewsResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return NewsTable::configure($table);
+        return $table
+            ->columns([
+                TextColumn::make('author.name'),
+                TextColumn::make('newsCategory.title'),
+                TextColumn::make('title'),
+                TextColumn::make('slug'),
+                TextColumn::make('thumbnail'),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions(NewsTable::getActions())
+            ->bulkActions(NewsTable::getBulkActions());
     }
 
     public static function getRelations(): array
