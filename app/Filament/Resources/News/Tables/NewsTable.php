@@ -2,29 +2,22 @@
 
 namespace App\Filament\Resources\News\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Table;
-
 class NewsTable
 {
-    public static function configure(Table $table): Table
+    public static function getActions(): array
     {
-        return $table
-            ->columns([
-                //
-            ])
-            ->filters([
-                //
-            ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+        return [
+            // Tambahkan action di sini, contoh:
+            // EditAction::make(),
+            // DeleteAction::make(),
+        ];
+    }
+
+    public static function getBulkActions(): array
+    {
+        return [
+            // Tambahkan bulk action di sini, contoh:
+            // BulkDeleteAction::make(),
+        ];
     }
 }
