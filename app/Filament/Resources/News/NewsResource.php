@@ -7,15 +7,22 @@ use App\Models\News;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Schemas\Schema;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
+use Filament\Actions\DeleteAction;
 use Filament\Support\Icons\Heroicon;
 use function Laravel\Prompts\select;
+
+use Filament\Actions\BulkActionGroup;
 use Filament\Forms\Components\Select;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Schemas\Components\Utilities\Set;
 use App\Filament\Resources\News\Pages\EditNews;
 use App\Filament\Resources\News\Pages\ListNews;
@@ -66,13 +73,27 @@ class NewsResource extends Resource
                 TextColumn::make('newsCategory.title'),
                 TextColumn::make('title'),
                 TextColumn::make('slug'),
-                TextColumn::make('thumbnail'),
+                ImageColumn::make('thumbnail'),
             ])
             ->filters([
-                //
+                SelectFilter::make('author_id')
+                ->relationship('author', 'name')
+                ->label('Select Author'),
+                SelectFilter::make('news_category_id')
+                ->relationship('newsCategory', 'title')
+                ->label('Select Category'),
             ])
-            ->actions(NewsTable::getActions())
-            ->bulkActions(NewsTable::getBulkActions());
+            ->actions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    // \Filament\Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array
