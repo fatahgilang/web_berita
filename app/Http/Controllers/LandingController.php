@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use Illuminate\Http\Request;
 
 class LandingController extends Controller
 {
     public function index() {
-        return view('pages.landing');
+        $banners= Banner::all();    
+        return view('pages.landing', compact('banners'));
     }
 }
