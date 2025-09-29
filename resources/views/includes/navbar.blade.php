@@ -21,11 +21,11 @@
           <ul
             class="flex flex-col lg:flex-row items-start lg:items-center gap-4 font-medium text-base w-full lg:w-auto">
             <li><a href="index.html" class="text-primary hover:text-gray-600">Beranda</a></li>
-            <li><a href="gayahidup.html" class="hover:text-primary">Gaya Hidup</a></li>
-            <li><a href="olahraga.html" class="hover:text-primary">Olahraga</a></li>
-            <li><a href="kesehatan.html" class="hover:text-primary">Kesehatan</a></li>
-            <li><a href="politik.html" class="hover:text-primary">Politik</a></li>
-            <li><a href="pariwisata.html" class="hover:text-primary">Pariwisata</a></li>
+            @foreach(App\Models\NewsCategory::all() as $category)
+            <li><a href="gayahidup.html" class="hover:text-primary">{{$category ->title}}</a></li>
+            @endforeach
+            
+           
           </ul>
         </div>
       </div>
