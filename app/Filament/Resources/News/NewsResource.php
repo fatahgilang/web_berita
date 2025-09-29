@@ -16,6 +16,7 @@ use function Laravel\Prompts\select;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -29,6 +30,7 @@ use App\Filament\Resources\News\Pages\ListNews;
 use App\Filament\Resources\News\Pages\CreateNews;
 use App\Filament\Resources\News\Schemas\NewsForm;
 use App\Filament\Resources\News\Tables\NewsTable;
+use Filament\Tables\Columns\ToggleColumn;
 
 class NewsResource extends Resource
 {
@@ -54,11 +56,13 @@ class NewsResource extends Resource
             ->readOnly(),
             FileUpload::make('thumbnail')
             ->image()
+            ->directory('thumbnails')
             ->required()
             ->columnSpanFull(),
             RichEditor::make('content')
             ->required()
             ->columnSpanFull(),
+            Toggle::make('is_featured')
             
 
     
@@ -74,6 +78,7 @@ class NewsResource extends Resource
                 TextColumn::make('title'),
                 TextColumn::make('slug'),
                 ImageColumn::make('thumbnail'),
+                ToggleColumn::make('is_featured')
             ])
             ->filters([
                 SelectFilter::make('author_id')
