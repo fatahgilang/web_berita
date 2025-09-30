@@ -49,6 +49,7 @@ class NewsResource extends Resource
             ->relationship('newsCategory', 'title')
             ->required(),
             TextInput::make('title')
+            ->maxLength(30)
              ->live(onBlur: true)
             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
             ->required(),
@@ -65,9 +66,9 @@ class NewsResource extends Resource
             ->required()
             ->columnSpanFull(),
             Toggle::make('is_featured')
-            
 
-    
+
+
         ]);
     }
 

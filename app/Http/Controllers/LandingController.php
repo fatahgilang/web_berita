@@ -9,8 +9,11 @@ use Illuminate\Http\Request;
 class LandingController extends Controller
 {
     public function index() {
-        $banners= Banner::all(); 
-        $featureds =News::where('is_featured', true)->get();
-        return view('pages.landing', compact('banners','featureds'));
+        $banners= Banner::all();
+        $featureds = News::where('is_featured', true)->get();
+        $news = News::orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+        return view('pages.landing', compact('banners','featureds','news'));
     }
 }
