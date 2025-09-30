@@ -55,7 +55,10 @@ class NewsResource extends Resource
             TextInput::make('slug')
             ->readOnly(),
             FileUpload::make('thumbnail')
-            ->image('thumbnails')
+            ->image()
+            ->disk('public')
+            ->directory('thumbnails')
+            ->visibility('public')
             ->required()
             ->columnSpanFull(),
             RichEditor::make('content')
@@ -76,7 +79,21 @@ class NewsResource extends Resource
                 TextColumn::make('newsCategory.title'),
                 TextColumn::make('title'),
                 TextColumn::make('slug'),
-                ImageColumn::make('thumbnail'),
+                ImageColumn::make('thumbnail')
+                ->getStateUsing(function ($record) {
+                    $path = $record->thumbnail ?? '';
+                    if ($path === '') {
+                        return null;
+                    }
+                    if (\Illuminate\Support\Str::startsWith($path, ['http://', 'https://'])) {
+                        return $path;
+                    }
+                    if (\Illuminate\Support\Str::startsWith($path, ['/storage/'])) {
+                        // Already a public path
+                        return $path;
+                    }
+                    return asset('storage/' . ltrim($path, '/'));
+                }),
                 ToggleColumn::make('is_featured')
             ])
             ->filters([

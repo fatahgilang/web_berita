@@ -8,22 +8,22 @@ use Filament\Tables\Table;
 use Filament\Schemas\Schema;
 use Filament\Actions\BulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
+use Filament\Actions\DeleteAction;
 use Filament\Support\Icons\Heroicon;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
 use App\Filament\Resources\Authors\Pages\EditAuthor;
 use App\Filament\Resources\Authors\Pages\ListAuthors;
 use App\Filament\Resources\Authors\Pages\CreateAuthor;
 use App\Filament\Resources\Authors\Schemas\AuthorForm;
 use App\Filament\Resources\Authors\Tables\AuthorsTable;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\ViewAction;
 
 class AuthorResource extends Resource
 {
@@ -43,6 +43,9 @@ class AuthorResource extends Resource
             ->required(),
             FileUpload::make('avatar')
             ->image()
+            ->disk('public')
+            ->directory('avatars')
+            ->visibility('public')
             ->required(),
             Textarea::make('bio')
             ->required(),
@@ -54,7 +57,23 @@ class AuthorResource extends Resource
         return $table
         ->columns([
             ImageColumn::make('avatar')
-            ->rounded()
+            ->getStateUsing(function ($record) {
+                $path = $record->avatar ?? '';
+                if ($path === '') {
+                    return null;
+                }
+                if (\Illuminate\Support\Str::startsWith($path, ['http://', 'https://'])) {
+                    return $path;
+                }
+                if (\Illuminate\Support\Str::startsWith($path, ['/storage/'])) {
+                    return $path;
+                }
+                // Strip legacy prefixes
+                $path = \Illuminate\Support\Str::startsWith($path, 'public/') ? \Illuminate\Support\Str::after($path, 'public/') : $path;
+                $path = \Illuminate\Support\Str::startsWith($path, 'storage/') ? \Illuminate\Support\Str::after($path, 'storage/') : $path;
+                return asset('storage/' . ltrim($path, '/'));
+            })
+            ->circular()
             ->label('Avatar'),
             TextColumn::make('name')
             ->searchable()
@@ -65,7 +84,7 @@ class AuthorResource extends Resource
             TextColumn::make('bio')
             ->limit(50)
             ->searchable()
-            ->sortable(),   
+            ->sortable(),
         ])
         ->filters([
                 //
