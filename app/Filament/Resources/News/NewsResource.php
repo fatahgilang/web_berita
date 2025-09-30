@@ -55,8 +55,7 @@ class NewsResource extends Resource
             TextInput::make('slug')
             ->readOnly(),
             FileUpload::make('thumbnail')
-            ->image()
-            ->directory('thumbnails')
+            ->image('thumbnails')
             ->required()
             ->columnSpanFull(),
             RichEditor::make('content')
