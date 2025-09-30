@@ -8,7 +8,7 @@
 <div class="swiper-slide">
           <a href="detail-MotoGp.html" class="block">
             <div class="relative flex flex-col gap-1 justify-end p-3 h-72 rounded-xl bg-cover bg-center overflow-hidden" 
-            style="background-image: url ('{{ asset('storage/app' . $banner->news->thumbnail) }}')">
+            style="background-image: url('{{ asset('storage/' . $banner->news->thumbnail) }}');">
              
                 <div
                 class="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-[rgba(0,0,0,0.4)] to-[rgba(0,0,0,0)] rounded-b-xl">
@@ -17,7 +17,7 @@
                 <div class="bg-primary text-white text-xs rounded-lg w-fit px-3 py-1 font-normal mt-3">{{$banner->news->NewsCategory->title}}</div>
                 <p class="text-3xl font-semibold text-white mt-1">{{$banner->news->title}}</p>
                 <div class="flex items-center gap-1 mt-1">
-                  <img src="{{asset('storage/app'.$banner->news->author->avatar)}}" alt="" class="w-5 h-5 rounded-full">
+                  <img src="{{ asset('storage/' . $banner->news->author->avatar) }}" alt="" class="w-5 h-5 rounded-full">
                   <p class="text-white text-xs">{{$banner->news->author->name}}</p>
                 </div>               
               </div>
@@ -51,7 +51,7 @@
             class="border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out">
             <div class="bg-primary text-white rounded-full w-fit px-5 py-1 font-normal ml-2 mt-2 text-sm absolute">
               {{ $featured->newsCategory->title }}</div>
-            <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="" class="w-full rounded-xl mb-3">
+            <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="thumbnails" class="w-full rounded-xl mb-3">
             <p class="font-bold text-base mb-1">{{$featured->title}}</p>
             <p class="text-slate-400">{{ \Carbon\Carbon::parse ($featured->created_at)->format('f F Y')}}</p>
           </div>
