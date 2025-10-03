@@ -49,7 +49,7 @@ class NewsResource extends Resource
             ->relationship('newsCategory', 'title')
             ->required(),
             TextInput::make('title')
-            ->maxLength(30)
+            ->maxLength(50)
              ->live(onBlur: true)
             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
             ->required(),
