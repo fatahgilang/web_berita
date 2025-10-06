@@ -20,12 +20,17 @@
           class="hidden lg:flex flex-col lg:flex-row lg:items-center lg:gap-10 w-full lg:w-auto mt-5 lg:mt-0">
           <ul
             class="flex flex-col lg:flex-row items-start lg:items-center gap-4 font-medium text-base w-full lg:w-auto">
-            <li><a href="index.html" class="text-primary hover:text-gray-600">Beranda</a></li>
+            <li>
+            <a href="{{ route('landing') }}"
+   class="{{ request()->is('') ? 'text-primary' : '' }} hover:text-gray-600">
+   Beranda
+</a>
+
             @foreach(App\Models\NewsCategory::all() as $category)
             <li><a href="gayahidup.html" class="hover:text-primary">{{$category ->title}}</a></li>
             @endforeach
-            
-           
+
+
           </ul>
         </div>
       </div>

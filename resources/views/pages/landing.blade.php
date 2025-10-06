@@ -51,7 +51,7 @@
 
         <!-- Kategori -->
         <div
-          class="bg-primary text-white rounded-full w-fit px-4 py-1 font-normal text-sm absolute top-3 left-3 z-10">
+          class="font-semibold text-lg clamp-2 mb-1">
           {{ $featured->newsCategory->title }}
         </div>
 
@@ -60,7 +60,7 @@
           class="w-full rounded-xl mb-3" style="height: 150px; object-fit: cover;">
 
         <!-- Judul (2 baris max, otomatis wrap) -->
-        <p class="font-semibold text-lg break-words line-clamp-2 mb-1">
+        <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1">
           {{$featured->title}}
         </p>
 
@@ -95,8 +95,8 @@
             </div>
             <img src="{{ Storage::url($news[0]->thumbnail) }}" alt="berita1" class="rounded-2xl">
             <p class="font-bold text-xl mt-3">{{ $news[0]->title }}</p>
-            <p class="text-slate-400 text-base mt-1"> {!! \Str::limit($news[0]->content, 100) !!}</p>
-            <p class="text-slate-400 text-base mt-1">{{ $news[0]->created_at?->format('d F Y') }}</p>
+            <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1"> {!! \Str::limit($news[0]->content, 100) !!}</p>
+            <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1">{{ $news[0]->created_at?->format('d F Y') }}</p>
           </a>
         </div>
 
@@ -109,7 +109,7 @@
             {{ $new->newsCategory->title }}</div>
           <img src="{{ Storage::url($new->thumbnail) }}" alt="berita2" 
           class="rounded-xl w-full md:max-h-48" style="width:250px; object-fit: cover;">
-          <div class="mt-2 md:mt-0">
+          <div class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1">
             <p class="font-semibold text-lg">{{ $new->title }}</p>
             <p class="text-slate-400 mt-3 text-sm font-normal">
               {!! \Str::limit($new->content, 100) !!}</p>
@@ -138,7 +138,7 @@
   <!-- Grid Author -->
   
   @foreach ($authors as $author)
-    <a href="author.html">
+    <a href="{{ route('author.show', $author->username) }} ">
       <div 
       class="flex flex-col items-center border border-slate-200 px-4 py-8 rounded-2xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out w-full">
         <img src="{{ $author->avatar ? asset('storage/' . $author->avatar) : asset('img/profile.png') }}" 
@@ -169,7 +169,7 @@
           {{ $choise->newsCategory->title }}
         </div>
         <img src="{{ asset('storage/' . $choise->thumbnail) }}" alt="" class="w-full rounded-xl mb-3 object-cover" style="height: 200px; object-fit: cover;">
-        <p class="font-bold text-base mb-1">{{ $choise->title ?? '' }}</p>
+        <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1 ">{{ $choise->title ?? '' }}</p>
         <p class="text-slate-400">{{ \Carbon\Carbon::parse($choise->created_at)->format('d F Y')}}</p>
       </div>
     </a>

@@ -20,12 +20,12 @@
           <div class=" gap-5 flex flex-col">
 @foreach ($newests as $new)
 <a href="detail-MotoGp.html">
-              <div class="flex gap-3 border border-slate-300 hover:border-primary p-3 rounded-xl">
+              <div class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1">
                 <div class="bg-primary text-white rounded-full w-fit px-5 py-1 ml-2 mt-2 font-normal text-xs absolute">
                   {{ $new->newsCategory->title }}
                 </div>
                 <div class="flex gap-3 flex-col lg:flex-row">
-                  <img src="{{ asset('storage/' . $new->thumbnail) }}" alt="" class="max-h-36 rounded-xl object-cover">
+                  <img src="{{ asset('storage/' . $new->thumbnail) }}" alt="" class="rounded-xl w-full md:max-h-48" style="width:250px; object-fit: cover;">
                   <div class="">
                     <p class="font-bold text-sm lg:text-base">{{ $new->title }}</p>
                     <p class="text-slate-400 mt-2 text-sm lg:text-xs">
