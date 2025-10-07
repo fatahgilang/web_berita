@@ -1,22 +1,14 @@
-@extends ('layouts.app')
-@section('title', $author->name)
+@extends('layouts.app')
+@section('title', $category->title)
 @section('content')
-<!-- Author -->
-    <div class="flex gap-4 items-center mb-10 text-white p-10 bg-cover"
-    style="background-image: url({{ asset('assets/img/bg-profile.png') }});">
-      <img src="{{ asset('storage/' . $author->avatar) }}" alt="profile" class="rounded-full max-w-28 ">
-      <div class="">
-        <p class="font-bold text-lg">{{ $author->name }}</p>
-        <p>
-            {{ $author->bio }}
-        </p>
-      </div>
+<!-- Header -->
+    <div class="w-full mb-16 bg-[#F6F6F6]">
+      <h1 class="text-center font-bold text-2xl p-24">{{ $category->title }}</h1>
     </div>
-
     <!-- Berita -->
     <div class=" flex flex-col gap-5 px-4 lg:px-14">
       <div class="grid sm:grid-cols-1 gap-5 lg:grid-cols-4">
-       @foreach ($author->news as $news)
+       @foreach ($category->news as $news)
           <a href="{{route('news.show', $news->slug)}}">
             <div
               class="border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out"

@@ -4,7 +4,7 @@
         <!-- Logo dan Menu -->
         <div class="flex items-center justify-between w-full lg:w-auto">
           <!-- Logo -->
-          <a href="index.html">
+          <a href="{{ route('landing') }}">
             <div class="flex items-center gap-2">
               <img src="./img/Logo.png" alt="Logo" class="w-8 lg:w-10">
               <p class="text-lg lg:text-xl font-bold">Maos</p>
@@ -26,8 +26,9 @@
    Beranda
 </a>
 
-            @foreach(App\Models\NewsCategory::all() as $category)
-            <li><a href="gayahidup.html" class="hover:text-primary">{{$category ->title}}</a></li>
+            @foreach (App\Models\NewsCategory::all() as $category)
+            <li><a href="{{ route('news.category', $category->slug) }}" 
+            class="hover:text-primary">{{$category ->title}}</a></li>
             @endforeach
 
 
