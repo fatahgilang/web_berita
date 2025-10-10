@@ -22,13 +22,13 @@
             class="flex flex-col lg:flex-row items-start lg:items-center gap-4 font-medium text-base w-full lg:w-auto">
             <li>
             <a href="{{ route('landing') }}"
-   class="{{ request()->is('') ? 'text-primary' : '' }} hover:text-gray-600">
-   Beranda
-</a>
+              class="{{ request()->is('/') ? 'text-primary' : '' }} hover:text-gray-600">
+              Beranda
+            </a>
 
             @foreach (App\Models\NewsCategory::all() as $category)
             <li><a href="{{ route('news.category', $category->slug) }}" 
-            class="hover:text-primary">{{$category ->title}}</a></li>
+            class="{{ request()->is($category->slug) ? 'text-primary' : '' }}hover:text-primary">{{$category ->title}}</a></li>
             @endforeach
 
 
