@@ -50,7 +50,10 @@
     <a href="author.html">
       <div
         class="flex flex-col lg:flex-row gap-4 items-center border border-slate-300 rounded-xl p-6 lg:p-8 hover:border-primary transition">
-        <img src="{{ asset('storage/' . $news->author->avatar) }}" alt="profile" class="rounded-full w-24 lg:w-28 border-2 border-primary">
+        <img src="{{ $news->author->avatar_url }}" 
+             alt="{{ $news->author->name }}" 
+             class="rounded-full w-24 lg:w-28 border-2 border-primary"
+             onerror="this.src='{{ asset('img/profile.svg') }}'">
         <div class="text-center lg:text-left">
           <p class="font-bold text-lg lg:text-xl">{{ $news->author->name }}</p>
           <p class="text-sm lg:text-base leading-relaxed">

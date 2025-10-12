@@ -42,11 +42,18 @@ class AuthorResource extends Resource
             TextInput::make('username')
             ->required(),
             FileUpload::make('avatar')
-            ->image()
-            ->disk('public')
-            ->directory('avatars')
-            ->visibility('public')
-            ->required(),
+                ->image()
+                ->disk('public')
+                ->directory('avatars')
+                ->visibility('public')
+                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+                ->maxSize(2048) // 2MB max
+                ->imageResizeMode('cover')
+                ->imageCropAspectRatio('1:1')
+                ->imageResizeTargetWidth('400')
+                ->imageResizeTargetHeight('400')
+                ->helperText('Upload JPG, PNG, or WebP format. Max 2MB. HEIC format is not supported.')
+                ->required(),
             Textarea::make('bio')
             ->required(),
         ]);
@@ -57,24 +64,14 @@ class AuthorResource extends Resource
         return $table
         ->columns([
             ImageColumn::make('avatar')
-            ->getStateUsing(function ($record) {
-                $path = $record->avatar ?? '';
-                if ($path === '') {
-                    return null;
-                }
-                if (\Illuminate\Support\Str::startsWith($path, ['http://', 'https://'])) {
-                    return $path;
-                }
-                if (\Illuminate\Support\Str::startsWith($path, ['/storage/'])) {
-                    return $path;
-                }
-                // Strip legacy prefixes
-                $path = \Illuminate\Support\Str::startsWith($path, 'public/') ? \Illuminate\Support\Str::after($path, 'public/') : $path;
-                $path = \Illuminate\Support\Str::startsWith($path, 'storage/') ? \Illuminate\Support\Str::after($path, 'storage/') : $path;
-                return asset('storage/' . ltrim($path, '/'));
-            })
-            ->circular()
-            ->label('Avatar'),
+                ->getStateUsing(function ($record) {
+                    // Use the avatar_url accessor from the model
+                    // This handles HEIC format and missing files automatically
+                    return $record->avatar_url;
+                })
+                ->circular()
+                ->defaultImageUrl(asset('img/profile.svg'))
+                ->label('Avatar'),
             TextColumn::make('name')
             ->searchable()
             ->sortable(),

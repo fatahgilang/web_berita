@@ -9,8 +9,12 @@ class Banner extends Model
     protected $fillable = [
         'news_id',
     ];
-    public function news() {
+    
+    /**
+     * Get the news that owns the banner.
+     */
+    public function news()
+    {
         return $this->belongsTo(News::class);
     }
-    
 }

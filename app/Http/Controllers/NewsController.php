@@ -18,6 +18,29 @@ class NewsController extends Controller
         return view('pages.news.show', compact('news','newests'));
     }
 
+    public function all(Request $request)
+    {
+        $query = News::with(['author', 'newsCategory'])->orderBy('created_at', 'desc');
+        
+        // Add search functionality
+        if ($request->has('search') && $request->search) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('content', 'like', '%' . $request->search . '%');
+        }
+        
+        // Add category filter
+        if ($request->has('category') && $request->category) {
+            $query->whereHas('newsCategory', function($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
+        
+        $news = $query->paginate(12);
+        $categories = NewsCategory::all();
+        
+        return view('pages.news.all', compact('news', 'categories'));
+    }
+
     public function category($slug) 
     {
         $category = NewsCategory::where ('slug', $slug)->first();

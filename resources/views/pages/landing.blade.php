@@ -8,7 +8,7 @@
 <div class="swiper-slide">
           <a href="{{ route('news.show', $banner->news->slug) }}" class="hover:cursor-pointer">
             <div class="relative flex flex-col gap-1 justify-end p-3 h-72 rounded-xl bg-cover bg-center overflow-hidden"
-            style="background-image: url('{{ Storage::url($banner->news->thumbnail) }}');">
+            style="background-image: url('{{ asset('storage/' . $banner->news->thumbnail) }}');">
 
                 <div
                 class="absolute inset-x-0 bottom-0 h-full bg-gradient-to-t from-[rgba(0,0,0,0.4)] to-[rgba(0,0,0,0)] rounded-b-xl">
@@ -18,7 +18,7 @@
                 <p class="text-3xl font-semibold text-white mt-1">{{$banner->news->title}}</p>
                 <div class="flex items-center gap-1 mt-1">
                   @if (!empty($banner->news->author?->avatar))
-                    <img src="{{ Storage::url($banner->news->author->avatar) }}" alt="" class="w-5 h-5 rounded-full">
+                    <img src="{{ $banner->news->author->avatar_url }}" alt="" class="w-5 h-5 rounded-full" onerror="this.src='{{ asset('img/profile.svg') }}'">
                   @endif
                   <p class="text-white text-xs">{{ $banner->news->author->name ?? 'Unknown' }}</p>
                 </div>
@@ -37,7 +37,7 @@
       <p>Berita Unggulan</p>
       <p>Untuk Kamu</p>
     </div>
-    <a href="semuaberita.html"
+    <a href="{{ route('news.all') }}"
       class="bg-primary px-5 py-2 rounded-full text-white font-semibold mt-4 md:mt-0 h-fit">
       Lihat Semua
     </a>
@@ -56,7 +56,7 @@
         </div>
 
         <!-- Thumbnail -->
-        <img src="{{ Storage::url($featured->thumbnail) }}" alt="thumbnails"
+        <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="thumbnails"
           class="w-full rounded-xl mb-3" style="height: 150px; object-fit: cover;">
 
         <!-- Judul (2 baris max, otomatis wrap) -->
@@ -88,26 +88,28 @@
 
       <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-5">
         <!-- Berita Utama -->
-        <div
+ <div
           class="relative col-span-7 lg:row-span-3 border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer">
+          @if(!empty($news) && isset($news[0]))
           <a href="{{ route('news.show', $news[0]->slug) }}">
             <div class="bg-primary text-white rounded-full w-fit px-4 py-1 font-normal ml-5 mt-5 absolute" >{{$news[0]->newsCategory->title}}
             </div>
-            <img src="{{ Storage::url($news[0]->thumbnail) }}" alt="berita1" class="rounded-2xl">
+            <img src="{{ asset('storage/' . $news[0]->thumbnail) }}" alt="berita1" class="rounded-2xl">
             <p class="font-bold text-xl mt-3">{{ $news[0]->title }}</p>
-            <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1"> {!! \Str::limit($news[0]->content, 100) !!}</p>
+            <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1"> {!! \Str::limit($news[0]->content, 500) !!}</p>
             <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1">{{ $news[0]->created_at?->format('d F Y') }}</p>
           </a>
+          @endif
         </div>
 
 
         <!-- Berita 1 -->
-         @foreach ($news->skip(1) as $new)
+ @foreach ($news->skip(1) as $new)
         <a href="{{ route('news.show', $new->slug) }}"
           class="relative col-span-5 flex flex-col h-fit md:flex-row gap-3 border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer">
           <div class="bg-primary text-white rounded-full w-fit px-4 py-1 font-normal ml-2 mt-2 absolute text-sm">
             {{ $new->newsCategory->title }}</div>
-          <img src="{{ Storage::url($new->thumbnail) }}" alt="berita2" 
+          <img src="{{ asset('storage/' . $new->thumbnail) }}" alt="berita2" 
           class="rounded-xl w-full md:max-h-48" style="width:250px; object-fit: cover;">
           <div class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1">
             <p class="font-semibold text-lg">{{ $new->title }}</p>
@@ -141,9 +143,10 @@
     <a href="{{ route('author.show', $author->username) }} ">
       <div 
       class="flex flex-col items-center border border-slate-200 px-4 py-8 rounded-2xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out w-full">
-        <img src="{{ $author->avatar ? asset('storage/' . $author->avatar) : asset('img/profile.png') }}" 
-             alt="$author->name" 
-             class="rounded-full w-24 h-24 object-cover">
+        <img src="{{ $author->avatar_url }}" 
+             alt="{{ $author->name }}" 
+             class="rounded-full w-24 h-24 object-cover"
+             onerror="this.src='{{ asset('img/profile.svg') }}'">
         <p class="font-bold text-xl mt-4">{{ $author->name }}</p>
         <p class="text-slate-400">{{ $author->news->count() }} Berita</p>
       </div>

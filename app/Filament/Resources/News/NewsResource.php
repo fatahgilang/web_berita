@@ -49,19 +49,25 @@ class NewsResource extends Resource
             ->relationship('newsCategory', 'title')
             ->required(),
             TextInput::make('title')
-            ->maxLength(50)
+            ->maxLength(100)
              ->live(onBlur: true)
             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
             ->required(),
             TextInput::make('slug')
             ->readOnly(),
             FileUpload::make('thumbnail')
-            ->image()
-            ->disk('public')
-            ->directory('thumbnails')
-            ->visibility('public')
-            ->required()
-            ->columnSpanFull(),
+                ->image()
+                ->disk('public')
+                ->directory('thumbnails')
+                ->visibility('public')
+                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                ->maxSize(5120) // 5MB max for news images
+                ->imageResizeMode('cover')
+                ->imageResizeTargetWidth('1200')
+                ->imageResizeTargetHeight('630') // Good for social media sharing
+                ->helperText('Upload JPG, PNG, or WebP format. Max 5MB. Recommended: 1200x630px')
+                ->required()
+                ->columnSpanFull(),
             RichEditor::make('content')
             ->required()
             ->columnSpanFull(),
@@ -81,20 +87,11 @@ class NewsResource extends Resource
                 TextColumn::make('title'),
                 TextColumn::make('slug'),
                 ImageColumn::make('thumbnail')
-                ->getStateUsing(function ($record) {
-                    $path = $record->thumbnail ?? '';
-                    if ($path === '') {
-                        return null;
-                    }
-                    if (\Illuminate\Support\Str::startsWith($path, ['http://', 'https://'])) {
-                        return $path;
-                    }
-                    if (\Illuminate\Support\Str::startsWith($path, ['/storage/'])) {
-                        // Already a public path
-                        return $path;
-                    }
-                    return asset('storage/' . ltrim($path, '/'));
-                }),
+                    ->getStateUsing(function ($record) {
+                        // Use the thumbnail_url accessor from the model
+                        return $record->thumbnail_url;
+                    })
+                    ->label('Thumbnail'),
                 ToggleColumn::make('is_featured')
             ])
             ->filters([
