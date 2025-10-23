@@ -2,12 +2,13 @@
 @section('title', 'Semua Berita - Maos')
 @section('content')
 
+<!-- margin kanan kiri -->
 <div class="container mx-auto px-4 md:px-10 lg:px-14 py-8">
     <!-- Header Section -->
-    <div class="mb-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Semua Berita</h1>
+    <!-- <div class="w-full mb-16 bg-[#f6f6f6]">
+        <h1 class="text-center font-bold text-2xl p-24">Semua Berita</h1>
         <p class="text-gray-600">Temukan berita terbaru dan terpercaya</p>
-    </div>
+    </div> -->
 
     <!-- Search and Filter Section -->
     <div class="mb-8">
@@ -68,33 +69,28 @@
 
     <!-- News Grid -->
     @if($news->count() > 0)
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+        <div class="grid sm:grid-cols-1 gap-5 lg:grid-cols-4">
             @foreach($news as $item)
                 <article class="bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-primary hover:shadow-lg transition duration-300 ease-in-out">
                     <a href="{{ route('news.show', $item->slug) }}" class="block">
+                        <div  class="border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out"
+                             style="height: 100%; object-fit: cover;">
                         <!-- Category Badge -->
-                            <div class="absolute top-3 left-3 bg-primary text-white text-xs rounded-lg px-3 py-1 font-medium">
-                                {{ $item->newsCategory->title }}
-                            </div>
+                          <div class="bg-primary text-white rounded-full w-fit px-5 py-1 font-normal ml-2 mt-2 text-sm absolute">
+                            {{ $item->newsCategory->title }}
+                          </div>
                     
-                    <!-- Thumbnail -->
-                        <div class="relative">
-                            <img src="{{ asset('storage/' . $item->thumbnail) }}" 
-                                 alt="{{ $item->title }}" 
-                                 class="w-full h-48 object-cover">  
-                        </div>
-                        
-                        <!-- Content -->
-                        <div class="p-4">
+                        <!-- Thumbnail -->
+                          <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="" class="w-full rounded-xl mb-3" 
+                             alt="{{ $item->title }}" 
+                             class="w-full rounded-xl mb-3" 
+                          style="height: 200px; object-fit: cover;">
                             <!-- Title -->
-                            <h3 class="font-semibold text-lg leading-tight mb-2 line-clamp-2 hover:text-primary transition duration-300">
-                                {{ $item->title }}
-                            </h3>
+                               <p class="font-bold text-base mb-1">{{ $item->title }}</p>
                             
                             <!-- Excerpt -->
-                            <p class="text-gray-600 text-sm mb-3 line-clamp-3">
-                                {!! \Str::limit(strip_tags($item->content), 120) !!}
-                            </p>
+                              <p class="text-slate-400">{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</p>
+                    
                             
                             <!-- Meta Info -->
                             <div class="flex items-center justify-between text-xs text-gray-500">

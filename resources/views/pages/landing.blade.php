@@ -144,10 +144,10 @@
       <div 
       class="flex flex-col items-center border border-slate-200 px-4 py-8 rounded-2xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out w-full">
         <img src="{{ $author->avatar_url }}" 
-             alt="{{ $author->name }}" 
+             alt="" 
              class="rounded-full w-24 h-24 object-cover"
              onerror="this.src='{{ asset('img/profile.svg') }}'">
-        <p class="font-bold text-xl mt-4">{{ $author->name }}</p>
+        <p class="font-bold text-xl mt-4">{{ $author->user->name ?? 'Unknown Author' }}</p>
         <p class="text-slate-400">{{ $author->news->count() }} Berita</p>
       </div>
     </a>

@@ -27,7 +27,17 @@ class NewsCategoryResource extends Resource
 {
     protected static ?string $model = NewsCategory::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-tag';
+
+    public static function canViewAny(): bool
+    {
+        return auth()->check();
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->check() && auth()->user()->isAdmin();
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,8 +68,8 @@ class NewsCategoryResource extends Resource
         ])
         ->actions([
             ViewAction::make(),
-            EditAction::make(),
-            DeleteAction::make(),
+            EditAction::make()->visible(auth()->check() && auth()->user()->isAdmin()),
+            DeleteAction::make()->visible(auth()->check() && auth()->user()->isAdmin()),
         ])
         ->bulkActions([
             DeleteBulkAction::make(),

@@ -12,6 +12,7 @@ use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
 use Filament\Actions\DeleteAction;
 use Filament\Support\Icons\Heroicon;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -31,14 +32,28 @@ class AuthorResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
 
+    public static function canViewAny(): bool
+    {
+        return auth()->check() && auth()->user()->isAdmin();
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->check() && auth()->user()->isAdmin();
+    }
+
     protected static ?string $recordTitleAttribute = 'AuthorResource';
 
     public static function form(Schema $schema): Schema
     {
         return $schema
         ->schema([
-            TextInput::make('name')
-            ->required(),
+            Select::make('user_id')
+            ->relationship('user', 'name')
+            ->required()
+            ->searchable()
+            ->preload(),
+
             TextInput::make('username')
             ->required(),
             FileUpload::make('avatar')
@@ -72,7 +87,7 @@ class AuthorResource extends Resource
                 ->circular()
                 ->defaultImageUrl(asset('img/profile.svg'))
                 ->label('Avatar'),
-            TextColumn::make('name')
+            TextColumn::make('user.name')
             ->searchable()
             ->sortable(),
             TextColumn::make('username')

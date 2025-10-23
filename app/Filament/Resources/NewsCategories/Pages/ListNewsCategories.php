@@ -13,7 +13,8 @@ class ListNewsCategories extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->visible(fn () => auth()->check() && auth()->user()->isAdmin()),
         ];
     }
 }

@@ -9,7 +9,7 @@
            class="rounded-full max-w-28"
            onerror="this.src='{{ asset('img/profile.svg') }}'">
       <div class="">
-        <p class="font-bold text-lg">{{ $author->name }}</p>
+        <p class="font-bold text-lg">{{ $author->user->name ?? 'Unknown Author' }}</p>
         <p>
             {{ $author->bio }}
         </p>

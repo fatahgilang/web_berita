@@ -43,7 +43,7 @@ class NewsResource extends Resource
         return $schema
         ->schema([
             Select::make('author_id')
-            ->relationship('author', 'name')
+            ->relationship('author', 'username')
             ->required(),
             Select::make('news_category_id')
             ->relationship('newsCategory', 'title')
@@ -82,7 +82,8 @@ class NewsResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('author.name'),
+                TextColumn::make('author.user.name')
+                    ->label('Author'),
                 TextColumn::make('newsCategory.title'),
                 TextColumn::make('title'),
                 TextColumn::make('slug'),
@@ -96,7 +97,7 @@ class NewsResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('author_id')
-                ->relationship('author', 'name')
+                ->relationship('author', 'username')
                 ->label('Select Author'),
                 SelectFilter::make('news_category_id')
                 ->relationship('newsCategory', 'title')
