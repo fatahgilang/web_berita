@@ -22,7 +22,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-
     ];
 
     /**
@@ -47,11 +46,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
     public function author()
     {
         return $this->hasOne(Author::class);
-
     }
+    
     // check if user is admin
     public function isAdmin(): bool
     {

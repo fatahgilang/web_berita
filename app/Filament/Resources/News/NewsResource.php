@@ -31,6 +31,7 @@ use App\Filament\Resources\News\Pages\CreateNews;
 use App\Filament\Resources\News\Schemas\NewsForm;
 use App\Filament\Resources\News\Tables\NewsTable;
 use Filament\Tables\Columns\ToggleColumn;
+use Illuminate\Database\Eloquent\Builder;
 
 class NewsResource extends Resource
 {
@@ -38,13 +39,42 @@ class NewsResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Newspaper;
 
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()->isAdmin()) {
+            return $query;
+
+        }
+            return $query->where('author_id', auth()->user()->author->id);
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
         ->schema([
             Select::make('author_id')
             ->relationship('author', 'username')
-            ->required(),
+            ->required()
+            ->options(function() {
+                $user = auth()->user();
+                if ($user->isAdmin()) {
+                    return Author::pluck('username', 'id');
+                } elseif ($user->author) {
+                    return [$user->author->id => $user->author->username];
+                }
+                return [];
+            })
+            ->default(function () {
+                $user = auth()->user();
+                return $user->author ? $user->author->id : null;
+            })
+            ->disabled(function() {
+                $user = auth()->user();
+                return !$user->isAdmin();
+            }),
+
             Select::make('news_category_id')
             ->relationship('newsCategory', 'title')
             ->required(),

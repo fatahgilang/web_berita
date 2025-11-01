@@ -12,6 +12,7 @@ class author extends Model
         'avatar',
         'bio',
     ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);

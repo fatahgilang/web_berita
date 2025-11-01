@@ -45,9 +45,9 @@
 
   <div class="grid sm:grid-cols-1 gap-5 lg:grid-cols-4">
     @foreach ($featureds as $featured)
-    <a href="{{ route('news.show', $featured->slug) }}">
+    <a href="{{ route('news.show', $featured->slug) }}" class="flex flex-col">
       <div
-        class="border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out relative">
+        class="border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out flex flex-col h-full">
 
         <!-- Kategori -->
         <div
@@ -59,13 +59,13 @@
         <img src="{{ asset('storage/' . $featured->thumbnail) }}" alt="thumbnails"
           class="w-full rounded-xl mb-3" style="height: 150px; object-fit: cover;">
 
-        <!-- Judul (2 baris max, otomatis wrap) -->
-        <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1">
+        <!-- Judul -->
+        <p class="font-semibold text-lg mb-1 line-clamp-2 flex-grow">
           {{$featured->title}}
         </p>
 
         <!-- Tanggal -->
-        <p class="text-slate-400 text-sm">
+        <p class="text-slate-400 text-sm mt-auto">
           {{ \Carbon\Carbon::parse($featured->created_at)->format('d F Y')}}
         </p>
       </div>
@@ -88,7 +88,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-5">
         <!-- Berita Utama -->
- <div
+        <div
           class="relative col-span-7 lg:row-span-3 border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer">
           @if(!empty($news) && isset($news[0]))
           <a href="{{ route('news.show', $news[0]->slug) }}">
@@ -111,7 +111,7 @@
             {{ $new->newsCategory->title }}</div>
           <img src="{{ asset('storage/' . $new->thumbnail) }}" alt="berita2" 
           class="rounded-xl w-full md:max-h-48" style="width:250px; object-fit: cover;">
-          <div class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1">
+          <div class="mt-2 md:mt-0">
             <p class="font-semibold text-lg">{{ $new->title }}</p>
             <p class="text-slate-400 mt-3 text-sm font-normal">
               {!! \Str::limit($new->content, 100) !!}</p>
@@ -131,7 +131,7 @@
       <p>Kenali Author</p>
       <p>Terbaik Dari Kami</p>
     </div>
-    <a href="register.html" 
+    <a href="/admin/register" 
        class="bg-primary px-5 py-2 rounded-full text-white font-semibold mt-4 md:mt-0">
       Gabung Menjadi Author
     </a>
@@ -166,14 +166,14 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     @foreach($news as $choise)
     <a href="{{ route('news.show', $choise->slug) }}">
-      <div class="relative border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out" style="height: 100%;">
+      <div class="relative border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out flex flex-col h-full">
         <!-- kategori -->
         <div class="absolute top-2 left-2 bg-primary text-white rounded-full px-5 py-1 font-normal text-sm">
           {{ $choise->newsCategory->title }}
         </div>
         <img src="{{ asset('storage/' . $choise->thumbnail) }}" alt="" class="w-full rounded-xl mb-3 object-cover" style="height: 200px; object-fit: cover;">
-        <p class="font-semibold text-lg overflow-hidden text-ellipsis whitespace-nowrap mb-1 ">{{ $choise->title ?? '' }}</p>
-        <p class="text-slate-400">{{ \Carbon\Carbon::parse($choise->created_at)->format('d F Y')}}</p>
+        <p class="font-semibold text-lg line-clamp-2 mb-1 flex-grow">{{ $choise->title ?? '' }}</p>
+        <p class="text-slate-400 mt-auto">{{ \Carbon\Carbon::parse($choise->created_at)->format('d F Y')}}</p>
       </div>
     </a>
     @endforeach
