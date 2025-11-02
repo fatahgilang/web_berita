@@ -69,39 +69,35 @@
 
     <!-- News Grid -->
     @if($news->count() > 0)
-        <div class="grid sm:grid-cols-1 gap-5 lg:grid-cols-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             @foreach($news as $item)
                 <article class="bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-primary hover:shadow-lg transition duration-300 ease-in-out">
                     <a href="{{ route('news.show', $item->slug) }}" class="block">
-                        <div  class="border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out"
-                             style="height: 100%; object-fit: cover;">
-                        <!-- Category Badge -->
-                          <div class="bg-primary text-white rounded-full w-fit px-5 py-1 font-normal ml-2 mt-2 text-sm absolute">
-                            {{ $item->newsCategory->title }}
-                          </div>
-                    
-                        <!-- Thumbnail -->
-                          <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="" class="w-full rounded-xl mb-3" 
-                             alt="{{ $item->title }}" 
-                             class="w-full rounded-xl mb-3" 
-                          style="height: 200px; object-fit: cover;">
-                            <!-- Title -->
-                               <p class="font-bold text-base mb-1">{{ $item->title }}</p>
+                        <div class="border border-slate-200 p-3 rounded-xl hover:border-primary hover:cursor-pointer transition duration-300 ease-in-out"
+                             style="height: 100%;">
+                            <!-- Thumbnail -->
+                            <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="{{ $item->title }}" 
+                                 class="w-full rounded-xl mb-3 news-thumbnail-medium">
                             
-                            <!-- Excerpt -->
-                              <p class="text-slate-400">{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</p>
-                    
+                            <!-- Category Badge -->
+                            <div class="category-badge">
+                                {{ $item->newsCategory->title }}
+                            </div>
+                            
+                            <!-- Title -->
+                            <p class="font-bold text-base mb-1 line-clamp-2">{{ $item->title }}</p>
+                            
+                            <!-- Date -->
+                            <p class="text-slate-400 text-sm">{{ \Carbon\Carbon::parse($item->created_at)->format('d F Y') }}</p>
                             
                             <!-- Meta Info -->
-                            <div class="flex items-center justify-between text-xs text-gray-500">
+                            <div class="flex items-center justify-between text-xs text-gray-500 mt-3">
                                 <div class="flex items-center gap-2">
                                     @if($item->author && $item->author->avatar)
                                         <img src="{{ $item->author->avatar_url }}" 
                                              alt="{{ $item->author->name }}" 
-                                             class="w-4 h-4 rounded-full"
-                                             onerror="this.src='{{ asset('img/profile.svg') }}'">
+                                             class="w-4 h-4 rounded-full author-image author-img">
                                     @endif
-                                    <!-- <span>{{ $item->author->name ?? 'Unknown' }}</span> -->
                                 </div>
                                 <span>{{ $item->created_at->format('d M Y') }}</span>
                             </div>
@@ -112,7 +108,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class="flex justify-center">
+        <div class="flex justify-center mt-8">
             {{ $news->withQueryString()->links() }}
         </div>
     @else

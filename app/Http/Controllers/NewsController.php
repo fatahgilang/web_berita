@@ -24,8 +24,11 @@ class NewsController extends Controller
         
         // Add search functionality
         if ($request->has('search') && $request->search) {
-            $query->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('content', 'like', '%' . $request->search . '%');
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('content', 'like', '%' . $searchTerm . '%');
+            });
         }
         
         // Add category filter

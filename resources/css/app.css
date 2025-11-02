@@ -8,30 +8,207 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-}
-.clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* jumlah baris maksimum */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
+    --color-primary: #ff801a;
 }
 
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
+@responsive {
+  .clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
 }
 
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
+/* Custom responsive utilities */
+@screen sm {
+  .sm\:clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+}
+
+@screen md {
+  .md\:clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+}
+
+@screen lg {
+  .lg\:clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+}
+
+/* Ensure proper responsive behavior */
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+@screen sm {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@screen md {
+  .container {
+    max-width: 768px;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
+}
+
+@screen lg {
+  .container {
+    max-width: 1024px;
+    padding-right: 3.5rem;
+    padding-left: 3.5rem;
+  }
+}
+
+@screen xl {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@screen 2xl {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* Fix for grid layouts on small screens */
+.grid-cols-responsive {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Ensure images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix for absolute positioned elements on small screens */
+@media (max-width: 767px) {
+  .mobile-relative {
+    position: relative !important;
+  }
+}
+
+/* Custom styles for news thumbnails - maintain aspect ratio */
+.news-thumbnail {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.news-thumbnail-small {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.news-thumbnail-medium {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.news-thumbnail-large {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Consistent height for featured news images */
+.featured-news-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.author-image {
+  object-fit: cover;
+}
+
+.bg-news-thumbnail {
+  background-size: cover;
+  background-position: center;
+}
+
+/* Fallback for images */
+img[alt="berita1"], 
+img[alt="berita2"], 
+img[alt="thumbnails"] {
+  background-color: #f0f0f0;
+}
+
+/* Ensure login button visibility */
+.login-button {
+  display: inline-block;
+  z-index: 10;
+  position: relative;
+}
+
+/* Professional category badge styling */
+.category-badge {
+  display: inline-block;
+  background-color: var(--color-primary, #ff801a);
+  color: white;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Hover effect for category badges */
+.category-badge:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  transition: all 0.2s ease-in-out;
 }

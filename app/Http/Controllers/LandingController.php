@@ -11,13 +11,17 @@ use Illuminate\Http\Request;
 class LandingController extends Controller
 {
     public function index() {
-        $banners= Banner::all();
+        $banners = Banner::with(['news.author.user', 'news.newsCategory'])->get();
         $featureds = News::where('is_featured', true)
-        ->get();
-        $news = News::orderBy('created_at', 'desc')
+            ->with(['author.user', 'newsCategory'])
+            ->get();
+        $news = News::with(['author.user', 'newsCategory'])
+            ->orderBy('created_at', 'desc')
             ->take(4)
             ->get();
-        $authors = Author::all()->take(3);
+        $authors = Author::with('user')
+            ->take(3)
+            ->get();
         return view('pages.landing', compact('banners','featureds','news', 'authors'));
     }
 }

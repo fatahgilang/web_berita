@@ -31,6 +31,7 @@ class author extends Model
      */
     public function getAvatarUrlAttribute(): string
     {
+        // Check if avatar exists
         if (!$this->avatar) {
             return asset('img/profile.svg');
         }
