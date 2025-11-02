@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.php",
+      "use": "vercel-php@0.6.0",
+      "config": {
+        "serverless": true,
+        "runtime": "php-8.2"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.php"
+    }
+  ],
+  "outputDirectory": "public"
+}

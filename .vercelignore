@@ -1,0 +1,13 @@
+node_modules/
+.git/
+.gitignore
+.env
+.env.example
+README.md
+composer.lock
+package-lock.json
+.DS_Store
+storage/
+vendor/
+tests/
+.phpunit.result.cache
